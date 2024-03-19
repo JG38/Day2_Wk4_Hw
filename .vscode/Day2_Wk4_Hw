@@ -1,0 +1,46 @@
+
+
+CREATE TABLE customer(
+    customer_id SERIAL PRIMARY KEY,
+    customer_name VARCHAR(50),
+    phone VARCHAR(20),
+    email VARCHAR(50),
+    age INTEGER,
+    VIP BOOLEAN
+);
+
+CREATE TABLE sale(
+    sale_id SERIAL PRIMARY KEY,
+    customer_id INT,
+    FOREIGN KEY (customer_id) REFERENCES customer (customer_id),
+    amount NUMERIC(8,2),
+    sale_date TIMESTAMP
+);
+
+CREATE TABLE concession(
+    concession_id SERIAL PRIMARY KEY,
+    sale_id INT,
+    price NUMERIC(8,2),
+    concession_name VARCHAR(50),
+    concession_desc VARCHAR(255),
+    FOREIGN KEY (sale_id) REFERENCES sale (sale_id)
+);
+
+CREATE TABLE ticket(
+    ticket_id SERIAL PRIMARY KEY,
+    sale_id INT,
+    price NUMERIC(8,2),
+    ticket_name VARCHAR(50),
+    ticket_class VARCHAR(50),
+    ticket_sale_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, 
+    FOREIGN KEY (sale_id) REFERENCES sale (sale_id)
+);
+
+CREATE TABLE movie(
+    movie_id SERIAL PRIMARY KEY,
+    ticket_id INT,
+    movie_title VARCHAR(50),
+    movie_genre VARCHAR(50),
+    movie_duration TIME, 
+    FOREIGN KEY (ticket_id) REFERENCES ticket (ticket_id)
+);
